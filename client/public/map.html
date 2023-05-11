@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Maps JavaScript API</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQOJcRU8FJRizHrZAAtwIUeO_Sw1eoeAs&callback=initMap"
+    ></script>
+  </head>
+  <body>
+    <a href="./index.html">Ana Sayfa</a>
+
+    <div id="map" style="height: 500px; width: 100%"></div>
+    <button onclick="deleteMarkers()">Delete Markers</button>
+    <button onclick="istek()">Get</button>
+
+    <script>
+      let map;
+      let markers = [];
+      let path = [];
+      let lines = [];
+      let additionalLine = null;
+      // const ul = document.querySelector("ul");
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: 40.49522, lng: 32.47745 },
+          zoom: 14,
+        });
+
+        google.maps.event.addListener(map, "click", (event) => {
+          const latLng = event.latLng.toJSON();
+          path.push(latLng);
+
+          const marker = new google.maps.Marker({
+            position: latLng,
+            map: map,
+          });
+
+          markers.push(marker);
+          console.log("Marker added: ", latLng);
+
+          // const li = document.createElement("li");
+          // li.textContent = `Lat: ${latLng.lat}, Lng: ${latLng.lng}`;
+          // ul.appendChild(li);
+
+          if (path.length > 1) {
+            // Create a new polyline between all the points
+            if (additionalLine !== null) {
+              additionalLine.setMap(null);
+            }
+            const line = new google.maps.Polyline({
+              path: path,
+              geodesic: true,
+              strokeColor: "#FF0000",
+              strokeOpacity: 1.0,
+              strokeWeight: 3,
+            });
+            line.setMap(map);
+            lines.push(line);
+            console.log("Line added");
+
+            if (path.length >= 3) {
+              // Create a new polyline between first and last points
+              additionalLine = new google.maps.Polyline({
+                path: [path[0], path[path.length - 1]],
+                geodesic: true,
+                strokeColor: "#00FF00",
+                strokeOpacity: 0.7,
+                strokeWeight: 1.5,
+              });
+              additionalLine.setMap(map);
+              console.log("Additional line added");
+            }
+          }
+        });
+      }
+
+      const istek = () => {
+        fetch("https://taslabeni.onrender.com/site/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            path,
+            customer_id: "642c1e14b37b36d53803ed31",
+            site_name: "Mermer 08 Madeni",
+            map_referance_system: "WGS-84",
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => console.log(data))
+          .catch((error) => console.error(error));
+      };
+
+      function deleteMarkers() {
+        for (let i = 0; i < markers.length; i++) {
+          markers[i].setMap(null);
+          additionalLine.setMap(null);
+        }
+        for (let i = 0; i < lines.length; i++) {
+          lines[i].setMap(null);
+        }
+        console.log(map);
+        markers = [];
+        path = [];
+        console.log("Markers and path deleted");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Harita Üzerinde Alan Seçme</title>
+    <meta name="viewport" content="initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <div class="container">
+      <div class="dopdown">
+        <select name="reference" id="reference">
+          <option value="WGS-84">WGS-84</option>
+          <option value="ECET">ECET</option>
+        </select>
+      </div>
+      <div class="buttons">
+        <button id="open" disabled>Çizim Modu Aç</button>
+        <button onclick="istek()">Log</button>
+        <button id="draw">Seçimi Tamamla</button>
+      </div>
+    </div>
+    <script src="mapScript.js"></script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQOJcRU8FJRizHrZAAtwIUeO_Sw1eoeAs&libraries=drawing&callback=initMap"
+    ></script>
+  </body>
+</html>
