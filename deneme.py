@@ -1,4 +1,4 @@
-# selam ben alper
+# selam ben ömer
 
 x = 10
 y = 10
