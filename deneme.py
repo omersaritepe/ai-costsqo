@@ -1,7 +1,6 @@
-x = 100
-y = 40000
-z = 20
-x = 2000
-a = 2000
+# Selam ben Ömer
 
-print(x * y)
+x = 999
+y = 999
+
+print(x + y)
