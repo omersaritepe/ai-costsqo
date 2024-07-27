@@ -1,7 +1,6 @@
-x = 100
-y = 40000
-z = 20
-x = 2000
-a = 2000
+# selam ben alper
+
+x = 10
+y = 10
 
 print(x * y)
